@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' http://localhost:8000 https://*.supabase.co;">
+
+    <!-- SEO & Social -->
+    <meta name="description"
+        content="Recrut'der - Find your professional match. AI-powered recruitment platform connecting talents with companies through smart matching.">
+    <meta name="keywords" content="recruitment, jobs, AI matching, hiring, talent, careers">
+    <meta name="author" content="Recrut'der">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Recrut'der - Find your professional match">
+    <meta property="og:description" content="AI-powered recruitment platform. Swipe, match, get hired.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://recrutder.com">
+    <meta property="og:image" content="assets/logo_v1.svg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Recrut'der - Find your professional match">
+    <meta name="twitter:description" content="AI-powered recruitment platform. Swipe, match, get hired.">
+
+    <title>Recrut'der - Find your professional match ☀️</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;500;600&family=Montserrat:wght@700&family=Noto+Sans+Bengali:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Poppins:wght@400;500;600;700&family=Tajawal:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-inner">
+            <a href="#" class="logo header-logo">
+                <img src="assets/logo_v1.svg" alt="Recrut'der Logo">
+            </a>
+
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="header-menu" id="headerMenu">
+                <ul class="nav-menu">
+                    <li><a href="#features" class="nav-link" data-i18n="nav.features">Features</a></li>
+                    <li><a href="#how-it-works" class="nav-link" data-i18n="nav.how_it_works">How it works</a></li>
+                    <li><a href="#pricing" class="nav-link" data-i18n="nav.pricing">Pricing</a></li>
+                    <li><a href="#candidates" class="nav-link" data-i18n="nav.candidates">Candidates</a></li>
+                    <li><a href="#recruiters" class="nav-link" data-i18n="nav.recruiters">Recruiters</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions" style="display: flex; align-items: center;">
+                <a href="app.html" class="btn btn-primary" data-i18n="nav.launch_app">Launch App</a>
+
+                <div class="lang-selector">
+                    <button class="lang-btn" id="langBtn">
+                        <span id="currentLangFlag">🇬🇧</span>
+                        <span id="currentLangCode">EN</span>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <div class="lang-option" data-lang="en" data-flag="🇬🇧" data-dir="ltr">🇬🇧 English</div>
+                        <div class="lang-option" data-lang="fr" data-flag="🇫🇷" data-dir="ltr">🇫🇷 Français</div>
+                        <div class="lang-option" data-lang="ar" data-flag="🇸🇦" data-dir="rtl">🇸🇦 العربية</div>
+                        <div class="lang-option" data-lang="zh" data-flag="🇨🇳" data-dir="ltr">🇨🇳 中文</div>
+                        <div class="lang-option" data-lang="es" data-flag="🇪🇸" data-dir="ltr">🇪🇸 Español</div>
+                        <div class="lang-option" data-lang="de" data-flag="🇩🇪" data-dir="ltr">🇩🇪 Deutsch</div>
+                        <div class="lang-option" data-lang="pt" data-flag="🇵🇹" data-dir="ltr">🇵🇹 Português</div>
+                        <div class="lang-option" data-lang="ru" data-flag="🇷🇺" data-dir="ltr">🇷🇺 Русский</div>
+                        <div class="lang-option" data-lang="hi" data-flag="🇮🇳" data-dir="ltr">🇮🇳 हिन्दी</div>
+                        <div class="lang-option" data-lang="bn" data-flag="🇧🇩" data-dir="ltr">🇧🇩 বাংলা</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <span class="hero-badge" data-i18n="hero.badge">🔥 30% cheaper than competitors</span>
+                <h1 data-i18n="hero.title">Find your professional match ☀️</h1>
+                <p data-i18n="hero.subtitle">Recrut'der connects talents to companies using AI. Swipe, match, get hired.
+                </p>
+                <div style="margin-top: 30px; display: flex; gap: 15px; flex-wrap: wrap;">
+                    <a href="app.html?mode=register" class="btn btn-primary" data-i18n="hero.cta_start">Start for
+                        free</a>
+                    <a href="app.html?mode=download" class="btn btn-secondary" data-i18n="hero.cta_download">Download
+                        App</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-3d-placeholder">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <!-- Simulated App Interface -->
+                            <div class="app-header">
+                                <div class="app-logo-small">R</div>
+                                <div class="app-status"></div>
+                            </div>
+                            <div class="app-card-stack">
+                                <div class="app-card card-1">
+                                    <div class="card-img"></div>
+                                    <div class="card-info">
+                                        <div class="card-name">Sarah, 28</div>
+                                        <div class="card-role">UX Designer</div>
+                                    </div>
+                                </div>
+                                <div class="app-card card-2"></div>
+                            </div>
+                            <div class="app-controls">
+                                <div class="app-btn btn-pass">✕</div>
+                                <div class="app-btn btn-super">★</div>
+                                <div class="app-btn btn-like">♥</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="how_it_works.title">3 steps to your next success</h2>
+                <p data-i18n="how_it_works.subtitle">A simple and efficient process to save time.</p>
+            </div>
+
+            <div class="grid grid-3 steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">☀️</div>
+                    <h3 data-i18n="how_it_works.step1_title">Create your profile</h3>
+                    <p data-i18n="how_it_works.step1_desc">Import your CV or LinkedIn profile in one click. Our AI
+                        analyzes your skills and preferences to create an attractive profile.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">👆</div>
+                    <h3 data-i18n="how_it_works.step2_title">Swipe offers</h3>
+                    <p data-i18n="how_it_works.step2_desc">Discover opportunities tailored to you. Swipe right to apply,
+                        left to pass. No cover letter required.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">💛</div>
+                    <h3 data-i18n="how_it_works.step3_title">It's a Match!</h3>
+                    <p data-i18n="how_it_works.step3_desc">If the company likes your profile too, it's a match! Chat
+                        directly and schedule an interview.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="features.title">Why choose Recrut'der?</h2>
+                <p data-i18n="features.subtitle">Innovative tools designed to revolutionize your recruitment experience.
+                </p>
+            </div>
+
+            <div class="grid grid-3 features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 data-i18n="features.ai_matching_title">Smart AI Matching</h3>
+                    <p data-i18n="features.ai_matching_desc">Our algorithm analyzes 12 key criteria (skills, culture,
+                        salary...) to offer you only relevant profiles or offers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 data-i18n="features.intuitive_swipe_title">Intuitive Swipe</h3>
+                    <p data-i18n="features.intuitive_swipe_desc">Forget boring lists. Browse profiles smoothly and make
+                        decisions quickly with our ergonomic interface.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 data-i18n="features.integrated_chat_title">Instant Chat</h3>
+                    <p data-i18n="features.integrated_chat_desc">Communicate directly with your matches. No emails lost
+                        in spam, just fluid and direct conversation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3 data-i18n="features.real_time_notif_title">Real-time Notifications</h3>
+                    <p data-i18n="features.real_time_notif_desc">Be alerted instantly of a new match or message. Never
+                        miss an opportunity again.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3 data-i18n="features.verified_profiles_title">Verified Profiles</h3>
+                    <p data-i18n="features.verified_profiles_desc">We verify the identity and skills of candidates and
+                        companies to ensure a safe and qualitative environment.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 data-i18n="features.analytics_title">Advanced Analytics</h3>
+                    <p data-i18n="features.analytics_desc">Track your performance, view your profile statistics and
+                        optimize your visibility (Pro & Business).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="pricing-header">
+                <h2 data-i18n="pricing.title">30% cheaper than competitors, 100% more effective</h2>
+                <div class="pricing-toggle">
+                    <span data-i18n="pricing.monthly">Monthly</span>
+                    <label class="switch">
+                        <input type="checkbox" id="pricingToggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span data-i18n="pricing.yearly">Yearly</span>
+                    <span class="badge-save"
+                        style="background: var(--success); padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;">-29%</span>
+                </div>
+            </div>
+
+            <div class="grid grid-4">
+                <!-- Candidate Free -->
+                <div class="pricing-card">
+                    <h3 data-i18n="pricing.free">Free</h3>
+                    <div class="price">0€</div>
+                    <ul class="features-list">
+                        <li>Profil complet</li>
+                        <li>10 swipes/jour</li>
+                        <li>Matchs illimités</li>
+                    </ul>
+                    <a href="app.html?plan=candidate_free" class="btn btn-secondary"
+                        data-i18n="pricing.cta_choose">Choose</a>
+                </div>
+
+                <!-- Candidate Premium -->
+                <div class="pricing-card popular">
+                    <div class="badge-popular" data-i18n="pricing.popular">POPULAR</div>
+                    <h3 data-i18n="pricing.premium">Premium</h3>
+                    <div class="price">6.99€<span data-i18n="pricing.per_month">/month</span></div>
+                    <ul class="features-list">
+                        <li>Swipes illimités</li>
+                        <li>Voir likes</li>
+                        <li>Boost 1x/semaine</li>
+                    </ul>
+                    <a href="app.html?plan=candidate_premium" class="btn btn-primary"
+                        data-i18n="pricing.cta_choose">Choose</a>
+                </div>
+
+                <!-- Recruiter Starter -->
+                <div class="pricing-card">
+                    <h3 data-i18n="pricing.starter">Starter</h3>
+                    <div class="price">69€<span data-i18n="pricing.per_month">/month</span></div>
+                    <ul class="features-list">
+                        <li>3 offres</li>
+                        <li>50 matchs/mois</li>
+                        <li>Chat illimité</li>
+                    </ul>
+                    <a href="app.html?plan=recruiter_starter" class="btn btn-secondary"
+                        data-i18n="pricing.cta_choose">Choose</a>
+                </div>
+
+                <!-- Recruiter Pro -->
+                <div class="pricing-card popular">
+                    <div class="badge-popular" data-i18n="pricing.recommended">RECOMMENDED</div>
+                    <h3 data-i18n="pricing.pro">Pro</h3>
+                    <div class="price">149€<span data-i18n="pricing.per_month">/month</span></div>
+                    <ul class="features-list">
+                        <li>10 offres</li>
+                        <li>200 matchs/mois</li>
+                        <li>Analytics</li>
+                    </ul>
+                    <a href="app.html?plan=recruiter_pro" class="btn btn-primary"
+                        data-i18n="pricing.cta_choose">Choose</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/main.js"></script>
+    <script src="js/ai-chatbot.js"></script>
+</body>
+
+</html>

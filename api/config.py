@@ -33,10 +33,22 @@ class Settings(BaseSettings):
     # CORS - Origines autorisées pour le frontend
     CORS_ORIGINS: str = "http://localhost:3000,http://localhost:5173,http://localhost:8000"
     
+    # Trusted Hosts (pour production)
+    ALLOWED_HOSTS: str = "localhost,127.0.0.1"
+    
+    # IA - API Keys pour parsing CV et chatbot
+    OPENAI_API_KEY: Optional[str] = None
+    ANTHROPIC_API_KEY: Optional[str] = None
+    
     @property
     def cors_origins_list(self) -> List[str]:
         """Convertit la string CORS_ORIGINS en liste"""
         return [origin.strip() for origin in self.CORS_ORIGINS.split(",")]
+    
+    @property
+    def allowed_hosts_list(self) -> List[str]:
+        """Convertit la string ALLOWED_HOSTS en liste"""
+        return [host.strip() for host in self.ALLOWED_HOSTS.split(",")]
     
     class Config:
         env_file = ".env"

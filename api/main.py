@@ -3,12 +3,22 @@
 =============================================
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 from loguru import logger
 
 from api.config import settings
-from api.routes import candidats, offres, matching, auth
+from api.routes import candidats, offres, matching, auth, entreprises, swipes, messages, notifications, cv_ai, tinder_feed, admin, support, rgpd, contact, job_ai
+# from api.routes import job_boards  # Temporairement désactivé pour corriger
+
+# Configuration du rate limiter
+limiter = Limiter(key_func=get_remote_address)
 
 # Création de l'application FastAPI
 app = FastAPI(
@@ -40,13 +50,46 @@ API de matching IA entre candidats et offres d'emploi.
     redoc_url="/redoc",
 )
 
-# Configuration CORS pour permettre les requêtes du frontend
+# Middleware de sécurité pour les headers HTTP
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        # Headers de sécurité recommandés par OWASP
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+        response.headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co;"
+        return response
+
+# Rate limiting pour protéger contre les attaques
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# Compression des réponses
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+# Middleware de sécurité
+app.add_middleware(SecurityHeadersMiddleware)
+
+# Trusted hosts (protection contre Host Header attacks)
+if not settings.DEBUG:
+    app.add_middleware(
+        TrustedHostMiddleware,
+        allowed_hosts=settings.allowed_hosts_list
+    )
+
+# Configuration CORS stricte pour permettre les requêtes du frontend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"],
+    expose_headers=["Content-Length", "Content-Range"],
+    max_age=600,
 )
 
 # Inclusion des routes
@@ -54,6 +97,20 @@ app.include_router(auth.router, prefix="/api/auth", tags=["🔐 Authentification
 app.include_router(candidats.router, prefix="/api/candidats", tags=["👤 Candidats"])
 app.include_router(offres.router, prefix="/api/offres", tags=["📋 Offres"])
 app.include_router(matching.router, prefix="/api/matching", tags=["🎯 Matching IA"])
+
+# Routes V2 - Nouvelles fonctionnalités
+app.include_router(entreprises.router, prefix="/api/entreprises", tags=["🏢 Entreprises"])
+app.include_router(swipes.router, prefix="/api/swipes", tags=["👍 Swipes Tinder"])
+app.include_router(messages.router, prefix="/api/messages", tags=["💬 Messagerie"])
+app.include_router(notifications.router, prefix="/api/notifications", tags=["🔔 Notifications"])
+app.include_router(cv_ai.router, prefix="/api/cv", tags=["🤖 IA - CV Parser"])
+app.include_router(job_ai.router, prefix="/api/job", tags=["🤖 IA - Fiche de Poste Parser"])
+app.include_router(tinder_feed.router, prefix="/api/tinder", tags=["🔥 Tinder Feed IA"])
+app.include_router(admin.router, prefix="/api/admin", tags=["👑 Dashboard Admin"])
+app.include_router(support.router, prefix="/api/support", tags=["🎫 Support & Chatbot IA"])
+app.include_router(rgpd.router, prefix="/api/rgpd", tags=["🔒 RGPD & Données Personnelles"])
+app.include_router(contact.router, prefix="/api/contact", tags=["📧 Contact Direct & RDV"])
+# app.include_router(job_boards.router, prefix="/api/job-boards", tags=["🌐 Job Boards (Indeed, LinkedIn)"])  # Temporairement désactivé
 
 
 # Route racine

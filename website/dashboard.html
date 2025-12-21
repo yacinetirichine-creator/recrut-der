@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Recrut'der</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFE66D 100%);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dashboard-container {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px;
+        }
+
+        .dashboard-container h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .dashboard-container p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            background: var(--cream);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--coral), var(--peach));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--dark);
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .dashboard-container {
+                padding: 30px 20px;
+            }
+
+            .dashboard-container h1 {
+                font-size: 2rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <h1>🎉 Welcome to Recrut'der!</h1>
+        <p>Your account is ready. Start swiping your way to your dream job!</p>
+
+        <div class="user-info">
+            <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
+            <p><strong>Account Type:</strong> <span id="userType">Loading...</span></p>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="startSwiping()">Start Swiping 🔥</button>
+            <button class="btn btn-secondary" onclick="logout()">Logout</button>
+        </div>
+
+        <p style="margin-top: 30px; font-size: 0.9rem; color: #999;">
+            <a href="index.html" style="color: var(--coral); text-decoration: none;">← Back to Homepage</a>
+        </p>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        const token = localStorage.getItem('auth_token');
+        const userType = localStorage.getItem('user_type');
+
+        if (!token) {
+            alert('Please login first');
+            window.location.href = 'app.html';
+        }
+
+        // Load user info
+        async function loadUserInfo() {
+            const userEmail = document.getElementById('userEmail');
+            const userTypeElem = document.getElementById('userType');
+
+            try {
+                const response = await fetch('http://localhost:8000/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    userEmail.textContent = userData.email || 'N/A';
+                    userTypeElem.textContent = userData.type_utilisateur === 'candidat' ? 'Candidate' : 'Recruiter';
+                } else {
+                    throw new Error('Failed to load user info');
+                }
+            } catch (error) {
+                console.error('Error loading user info:', error);
+                userEmail.textContent = 'Error loading data';
+                userTypeElem.textContent = userType === 'candidat' ? 'Candidate' : 'Recruiter';
+            }
+        }
+
+        function startSwiping() {
+            alert('🔥 Tinder-style swiping feature coming soon!\n\nThis will connect to the /api/tinder/feed endpoint.');
+        }
+
+        function logout() {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_type');
+            alert('Logged out successfully!');
+            window.location.href = 'index.html';
+        }
+
+        // Initialize
+        loadUserInfo();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+{
+    "nav": {
+        "features": "Features",
+        "how_it_works": "How it works",
+        "pricing": "Pricing",
+        "candidates": "Candidates",
+        "recruiters": "Recruiters",
+        "launch_app": "Launch App"
+    },
+    "hero": {
+        "title": "Find your professional match ☀️",
+        "subtitle": "Recrut'der connects talents to companies using AI. Swipe, match, get hired.",
+        "badge": "🔥 30% cheaper than competitors",
+        "cta_start": "Start for free",
+        "cta_download": "Download App"
+    },
+    "pricing": {
+        "title": "30% cheaper than competitors, 100% more effective",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "save": "Save",
+        "candidates_title": "CANDIDATES",
+        "recruiters_title": "RECRUITERS",
+        "free": "Free",
+        "premium": "Premium",
+        "starter": "Starter",
+        "pro": "Pro",
+        "business": "Business",
+        "enterprise": "Enterprise",
+        "popular": "POPULAR",
+        "recommended": "RECOMMENDED",
+        "per_month": "/month",
+        "per_year": "/year",
+        "cta_choose": "Choose Plan",
+        "cta_contact": "Contact Us"
+    },
+    "chatbot": {
+        "title": "Asistente Recrut'der",
+        "status": "En línea - Impulsado por IA",
+        "placeholder": "Escribe tu mensaje..."
+    }
+}

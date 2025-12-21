@@ -26,3 +26,17 @@ httpx==0.26.0
 
 # Logging
 loguru==0.7.2
+
+# Rate Limiting (protection contre attaques)
+slowapi==0.1.9
+
+# HTTP Client (pour appels API externes)
+# httpx déjà inclus dans les tests
+
+# IA - OpenAI et Anthropic (pour parsing CV et chatbot)
+openai==1.54.0
+anthropic==0.39.0
+
+# PDF/DOCX Processing
+PyPDF2==3.0.1
+python-docx==1.1.0

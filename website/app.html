@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' http://localhost:8000 https://*.supabase.co;">
+
+    <title>Recrut'der - App Access</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFE66D 100%);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app-container {
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Left Side - 3D Visuals */
+        .visual-side {
+            flex: 1;
+            background: linear-gradient(135deg, var(--coral), var(--peach));
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .visual-content {
+            text-align: center;
+            color: white;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .visual-content h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .visual-content p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* 3D Floating Cards Animation */
+        .cards-container {
+            position: absolute;
+            width: 300px;
+            height: 400px;
+            transform-style: preserve-3d;
+            animation: float-container 6s ease-in-out infinite;
+        }
+
+        .floating-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform-origin: center center;
+            transition: transform 0.5s;
+        }
+
+        .card-1 {
+            z-index: 3;
+            transform: rotate(-5deg) translateZ(50px);
+            animation: swipe-card 8s infinite ease-in-out;
+        }
+
+        .card-2 {
+            z-index: 2;
+            transform: rotate(5deg) translateZ(20px);
+            background: #f8f9fa;
+            opacity: 0.8;
+        }
+
+        .card-3 {
+            z-index: 1;
+            transform: rotate(-2deg) translateZ(0px);
+            background: #e9ecef;
+            opacity: 0.6;
+        }
+
+        .card-img {
+            height: 65%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .c1-img {
+            background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');
+        }
+
+        .c2-img {
+            background-image: url('https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-name {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+
+        .card-role {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: var(--sky);
+            color: var(--dark);
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* Right Side - Auth Form */
+        .auth-side {
+            flex: 1;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .auth-header {
+            margin-bottom: 40px;
+        }
+
+        .auth-logo {
+            height: 50px;
+            margin-bottom: 20px;
+        }
+
+        .auth-title {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .auth-subtitle {
+            color: #888;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--coral);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: var(--dark);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--coral), var(--peach));
+        }
+
+        .social-login {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            color: var(--dark);
+            transition: background 0.2s;
+        }
+
+        .social-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .toggle-auth {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .toggle-auth a {
+            color: var(--coral);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Plan Badge */
+        .plan-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: #006442;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes float-container {
+
+            0%,
+            100% {
+                transform: translateY(0) rotateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px) rotateY(5deg);
+            }
+        }
+
+        @keyframes swipe-card {
+
+            0%,
+            10%,
+            100% {
+                transform: rotate(-5deg) translateZ(50px) translateX(0);
+                opacity: 1;
+            }
+
+            40% {
+                transform: rotate(15deg) translateZ(50px) translateX(150px);
+                opacity: 0;
+            }
+
+            41% {
+                transform: rotate(-15deg) translateZ(50px) translateX(-150px);
+                opacity: 0;
+            }
+
+            50% {
+                transform: rotate(-5deg) translateZ(50px) translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .visual-side {
+                display: none;
+            }
+
+            .app-container {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+            }
+
+            .auth-side {
+                padding: 40px 30px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .auth-side {
+                padding: 30px 20px;
+            }
+
+            .auth-title {
+                font-size: 1.5rem;
+            }
+
+            .auth-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .form-input {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            .btn-submit {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+
+            .social-btn {
+                width: 100%;
+            }
+        }
+
+        /* Tablet specific */
+        @media (min-width: 601px) and (max-width: 900px) {
+            .auth-side {
+                padding: 50px 40px;
+            }
+
+            .app-container {
+                width: 95%;
+                max-width: 600px;
+                margin: 20px auto;
+                border-radius: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Left Side: 3D Experience -->
+        <div class="visual-side">
+            <div class="cards-container">
+                <div class="floating-card card-3">
+                    <div class="card-img c2-img"></div>
+                </div>
+                <div class="floating-card card-2">
+                    <div class="card-img c2-img"></div>
+                </div>
+                <div class="floating-card card-1">
+                    <div class="card-img c1-img"></div>
+                    <div class="card-body">
+                        <div class="card-name">Sarah, 28</div>
+                        <div class="card-role">Product Designer</div>
+                        <div class="card-tags">
+                            <span class="tag">UX/UI</span>
+                            <span class="tag">Figma</span>
+                            <span class="tag">Agile</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="visual-content" style="position: absolute; bottom: 60px;">
+                <h2>It's a Match! ☀️</h2>
+                <p>Join 50,000+ talents finding their dream job.</p>
+            </div>
+        </div>
+
+        <!-- Right Side: Auth Form -->
+        <div class="auth-side">
+            <div id="planBadge" class="plan-badge">Plan Selected</div>
+
+            <div class="auth-header">
+                <img src="assets/logo_v1.svg" alt="Recrut'der" class="auth-logo">
+                <h1 class="auth-title" id="formTitle">Welcome Back</h1>
+                <p class="auth-subtitle" id="formSubtitle">Enter your details to access your workspace.</p>
+            </div>
+
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="form-group" id="nomGroup" style="display: none;">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="nomInput" class="form-input" placeholder="John Doe">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="emailInput" class="form-input" placeholder="name@company.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="passwordInput" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group" id="typeGroup" style="display: none;">
+                    <label class="form-label">Account Type</label>
+                    <select id="typeInput" class="form-input">
+                        <option value="candidat">Candidate</option>
+                        <option value="recruteur">Recruiter</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="entrepriseGroup" style="display: none;">
+                    <label class="form-label">Company Name</label>
+                    <input type="text" id="entrepriseInput" class="form-input" placeholder="Your Company">
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">Sign In</button>
+            </form>
+
+            <div class="social-login">
+                <button class="social-btn">Google</button>
+                <button class="social-btn">LinkedIn</button>
+            </div>
+
+            <div class="toggle-auth">
+                <span id="toggleText">Don't have an account?</span>
+                <a href="#" onclick="toggleMode(); return false;" id="toggleLink">Sign up for free</a>
+            </div>
+
+            <div style="margin-top: 30px; text-align: center;">
+                <a href="index.html" style="color: #999; text-decoration: none; font-size: 0.85rem;">← Back to
+                    website</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration API
+        const API_BASE_URL = 'http://localhost:8000/api';
+
+        // Logic to handle URL parameters and toggle modes
+        const urlParams = new URLSearchParams(window.location.search);
+        const plan = urlParams.get('plan');
+        const mode = urlParams.get('mode');
+
+        const formTitle = document.getElementById('formTitle');
+        const formSubtitle = document.getElementById('formSubtitle');
+        const submitBtn = document.getElementById('submitBtn');
+        const toggleText = document.getElementById('toggleText');
+        const toggleLink = document.getElementById('toggleLink');
+        const planBadge = document.getElementById('planBadge');
+
+        // Form fields
+        const nomGroup = document.getElementById('nomGroup');
+        const nomInput = document.getElementById('nomInput');
+        const typeGroup = document.getElementById('typeGroup');
+        const typeInput = document.getElementById('typeInput');
+        const entrepriseGroup = document.getElementById('entrepriseGroup');
+        const entrepriseInput = document.getElementById('entrepriseInput');
+        const emailInput = document.getElementById('emailInput');
+        const passwordInput = document.getElementById('passwordInput');
+
+        let isRegister = mode === 'register' || !!plan;
+
+        function updateUI() {
+            if (isRegister) {
+                formTitle.textContent = "Create Account";
+                formSubtitle.textContent = "Start your journey with Recrut'der today.";
+                submitBtn.textContent = "Get Started";
+                toggleText.textContent = "Already have an account?";
+                toggleLink.textContent = "Sign in";
+
+                // Show registration fields
+                nomGroup.style.display = 'block';
+                nomInput.required = true;
+                typeGroup.style.display = 'block';
+                typeInput.required = true;
+
+                if (plan) {
+                    planBadge.style.display = 'block';
+                    planBadge.textContent = formatPlanName(plan) + " Plan Selected";
+                }
+            } else {
+                formTitle.textContent = "Welcome Back";
+                formSubtitle.textContent = "Enter your details to access your workspace.";
+                submitBtn.textContent = "Sign In";
+                toggleText.textContent = "Don't have an account?";
+                toggleLink.textContent = "Sign up for free";
+                planBadge.style.display = 'none';
+
+                // Hide registration fields
+                nomGroup.style.display = 'none';
+                nomInput.required = false;
+                typeGroup.style.display = 'none';
+                typeInput.required = false;
+                entrepriseGroup.style.display = 'none';
+                entrepriseInput.required = false;
+            }
+        }
+
+        // Show/hide company field based on account type
+        typeInput.addEventListener('change', function () {
+            if (this.value === 'recruteur') {
+                entrepriseGroup.style.display = 'block';
+                entrepriseInput.required = true;
+            } else {
+                entrepriseGroup.style.display = 'none';
+                entrepriseInput.required = false;
+            }
+        });
+
+        function toggleMode() {
+            isRegister = !isRegister;
+            updateUI();
+        }
+
+        function formatPlanName(str) {
+            return str.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        async function handleAuth(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+
+            btn.textContent = "Loading...";
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
+
+            try {
+                if (isRegister) {
+                    await registerUser();
+                } else {
+                    await loginUser();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error.message || 'An error occurred. Please try again.');
+                btn.textContent = originalText;
+                btn.disabled = false;
+                btn.style.opacity = "1";
+            }
+        }
+
+        async function registerUser() {
+            const userData = {
+                email: emailInput.value,
+                password: passwordInput.value,
+                nom: nomInput.value,
+                type_utilisateur: typeInput.value
+            };
+
+            // Add company if recruiter
+            if (typeInput.value === 'recruteur') {
+                userData.entreprise = entrepriseInput.value;
+            }
+
+            const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.detail || 'Registration failed');
+            }
+
+            // Store token
+            localStorage.setItem('auth_token', data.access_token);
+            localStorage.setItem('user_type', typeInput.value);
+
+            // Show success and redirect
+            alert('Account created successfully! Redirecting to dashboard...');
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1000);
+        }
+
+        async function loginUser() {
+            const credentials = {
+                email: emailInput.value,
+                password: passwordInput.value
+            };
+
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(credentials)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.detail || 'Login failed');
+            }
+
+            // Store token
+            localStorage.setItem('auth_token', data.access_token);
+
+            // Get user info
+            const userResponse = await fetch(`${API_BASE_URL}/auth/me`, {
+                headers: {
+                    'Authorization': `Bearer ${data.access_token}`
+                }
+            });
+
+            if (userResponse.ok) {
+                const userData = await userResponse.json();
+                localStorage.setItem('user_type', userData.type_utilisateur);
+            }
+
+            // Show success and redirect
+            alert('Login successful! Redirecting to dashboard...');
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1000);
+        }
+
+        // Initialize
+        updateUI();
+    </script>
+    <script src="js/ai-chatbot.js"></script>
+</body>
+
+</html>

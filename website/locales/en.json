@@ -1,0 +1,68 @@
+{
+    "nav": {
+        "features": "Features",
+        "how_it_works": "How it works",
+        "pricing": "Pricing",
+        "candidates": "Candidates",
+        "recruiters": "Recruiters",
+        "launch_app": "Launch App"
+    },
+    "hero": {
+        "title": "Find your professional match ☀️",
+        "subtitle": "Recrut'der connects talents to companies using AI. Swipe, match, get hired.",
+        "badge": "🔥 30% cheaper than competitors",
+        "cta_start": "Start for free",
+        "cta_download": "Download App"
+    },
+    "how_it_works": {
+        "title": "3 steps to your next success",
+        "subtitle": "A simple and efficient process to save time.",
+        "step1_title": "Create your profile",
+        "step1_desc": "Import your CV or LinkedIn profile in one click. Our AI analyzes your skills and preferences to create an attractive profile.",
+        "step2_title": "Swipe offers",
+        "step2_desc": "Discover opportunities tailored to you. Swipe right to apply, left to pass. No cover letter required.",
+        "step3_title": "It's a Match!",
+        "step3_desc": "If the company likes your profile too, it's a match! Chat directly and schedule an interview."
+    },
+    "features": {
+        "title": "Why choose Recrut'der?",
+        "subtitle": "Innovative tools designed to revolutionize your recruitment experience.",
+        "ai_matching_title": "Smart AI Matching",
+        "ai_matching_desc": "Our algorithm analyzes 12 key criteria (skills, culture, salary...) to offer you only relevant profiles or offers.",
+        "intuitive_swipe_title": "Intuitive Swipe",
+        "intuitive_swipe_desc": "Forget boring lists. Browse profiles smoothly and make decisions quickly with our ergonomic interface.",
+        "integrated_chat_title": "Instant Chat",
+        "integrated_chat_desc": "Communicate directly with your matches. No emails lost in spam, just fluid and direct conversation.",
+        "real_time_notif_title": "Real-time Notifications",
+        "real_time_notif_desc": "Be alerted instantly of a new match or message. Never miss an opportunity again.",
+        "verified_profiles_title": "Verified Profiles",
+        "verified_profiles_desc": "We verify the identity and skills of candidates and companies to ensure a safe and qualitative environment.",
+        "analytics_title": "Advanced Analytics",
+        "analytics_desc": "Track your performance, view your profile statistics and optimize your visibility (Pro & Business)."
+    },
+    "pricing": {
+        "title": "30% cheaper than competitors, 100% more effective",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "save": "Save",
+        "candidates_title": "CANDIDATES",
+        "recruiters_title": "RECRUITERS",
+        "free": "Free",
+        "premium": "Premium",
+        "starter": "Starter",
+        "pro": "Pro",
+        "business": "Business",
+        "enterprise": "Enterprise",
+        "popular": "POPULAR",
+        "recommended": "RECOMMENDED",
+        "per_month": "/month",
+        "per_year": "/year",
+        "cta_choose": "Choose Plan",
+        "cta_contact": "Contact Us"
+    },
+    "chatbot": {
+        "title": "Recrut'der Assistant",
+        "status": "Online - AI powered",
+        "placeholder": "Type your message..."
+    }
+}
