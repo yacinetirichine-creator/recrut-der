@@ -1,0 +1,28 @@
+# Recrut'der - Dépendances Python
+# ================================
+
+# Framework API
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+
+# Validation des données
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Base de données & Authentification
+supabase==2.3.4
+postgrest==0.13.2
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+
+# Utilitaires
+python-dotenv==1.0.0
+
+# Tests
+pytest==7.4.4
+pytest-cov==4.1.0
+httpx==0.26.0
+
+# Logging
+loguru==0.7.2
