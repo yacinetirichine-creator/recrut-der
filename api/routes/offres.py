@@ -3,29 +3,30 @@
 ================
 """
 
-from fastapi import APIRouter, HTTPException
-from typing import List
+from fastapi import APIRouter, HTTPException, Depends
+from typing import List, Dict, Any
 
 from api.models.offre import Offre, OffreCreate, OffreUpdate
 from api.database.fake_data import offres_db, get_next_offre_id
+from api.routes.auth import get_current_user
 
 router = APIRouter()
 
 
 @router.get("/", response_model=List[Offre])
-async def lister_offres():
+async def lister_offres(current_user: Dict[str, Any] = Depends(get_current_user)):
     return list(offres_db.values())
 
 
 @router.get("/{offre_id}", response_model=Offre)
-async def get_offre(offre_id: int):
+async def get_offre(offre_id: int, current_user: Dict[str, Any] = Depends(get_current_user)):
     if offre_id not in offres_db:
         raise HTTPException(status_code=404, detail=f"Offre {offre_id} non trouvée")
     return offres_db[offre_id]
 
 
 @router.post("/", response_model=Offre, status_code=201)
-async def creer_offre(offre: OffreCreate):
+async def creer_offre(offre: OffreCreate, current_user: Dict[str, Any] = Depends(get_current_user)):
     new_id = get_next_offre_id()
     offre_data = offre.model_dump()
     offre_data["id"] = new_id
@@ -39,7 +40,7 @@ async def creer_offre(offre: OffreCreate):
 
 
 @router.put("/{offre_id}", response_model=Offre)
-async def modifier_offre(offre_id: int, offre_update: OffreUpdate):
+async def modifier_offre(offre_id: int, offre_update: OffreUpdate, current_user: Dict[str, Any] = Depends(get_current_user)):
     if offre_id not in offres_db:
         raise HTTPException(status_code=404, detail=f"Offre {offre_id} non trouvée")
     
@@ -56,7 +57,7 @@ async def modifier_offre(offre_id: int, offre_update: OffreUpdate):
 
 
 @router.delete("/{offre_id}", status_code=204)
-async def supprimer_offre(offre_id: int):
+async def supprimer_offre(offre_id: int, current_user: Dict[str, Any] = Depends(get_current_user)):
     if offre_id not in offres_db:
         raise HTTPException(status_code=404, detail=f"Offre {offre_id} non trouvée")
     del offres_db[offre_id]

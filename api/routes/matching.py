@@ -3,18 +3,19 @@
 =====================
 """
 
-from fastapi import APIRouter, HTTPException, Query
-from typing import Optional
+from fastapi import APIRouter, HTTPException, Query, Depends
+from typing import Optional, Dict, Any
 
 from api.models.matching import MatchingResult, MatchingRequest, MatriceResponse
 from api.database.fake_data import candidats_db, offres_db
 from api.services.matching_engine import MatchingEngine
+from api.routes.auth import get_current_user
 
 router = APIRouter()
 
 
 @router.post("/score", response_model=MatchingResult)
-async def calculer_score(request: MatchingRequest):
+async def calculer_score(request: MatchingRequest, current_user: Dict[str, Any] = Depends(get_current_user)):
     if request.candidat_id not in candidats_db:
         raise HTTPException(status_code=404, detail=f"Candidat {request.candidat_id} non trouvé")
     if request.offre_id not in offres_db:
@@ -26,7 +27,7 @@ async def calculer_score(request: MatchingRequest):
 
 
 @router.get("/candidat/{candidat_id}/top-offres")
-async def top_offres_candidat(candidat_id: int, top_n: int = Query(default=5, ge=1, le=20)):
+async def top_offres_candidat(candidat_id: int, top_n: int = Query(default=5, ge=1, le=20), current_user: Dict[str, Any] = Depends(get_current_user)):
     if candidat_id not in candidats_db:
         raise HTTPException(status_code=404, detail=f"Candidat {candidat_id} non trouvé")
     
@@ -43,7 +44,7 @@ async def top_offres_candidat(candidat_id: int, top_n: int = Query(default=5, ge
 
 
 @router.get("/offre/{offre_id}/top-candidats")
-async def top_candidats_offre(offre_id: int, top_n: int = Query(default=5, ge=1, le=20)):
+async def top_candidats_offre(offre_id: int, top_n: int = Query(default=5, ge=1, le=20), current_user: Dict[str, Any] = Depends(get_current_user)):
     if offre_id not in offres_db:
         raise HTTPException(status_code=404, detail=f"Offre {offre_id} non trouvée")
     
@@ -61,14 +62,14 @@ async def top_candidats_offre(offre_id: int, top_n: int = Query(default=5, ge=1,
 
 
 @router.get("/matrice", response_model=MatriceResponse)
-async def matrice_complete():
+async def matrice_complete(current_user: Dict[str, Any] = Depends(get_current_user)):
     candidats = list(candidats_db.values())
     offres = list(offres_db.values())
     return MatchingEngine.matrice_complete(candidats, offres)
 
 
 @router.get("/statistiques")
-async def statistiques_matching():
+async def statistiques_matching(current_user: Dict[str, Any] = Depends(get_current_user)):
     candidats = list(candidats_db.values())
     offres = list(offres_db.values())
     matrice = MatchingEngine.matrice_complete(candidats, offres)

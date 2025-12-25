@@ -4,7 +4,7 @@
 Endpoints pour inscription, connexion, déconnexion
 """
 
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import Dict, Any
 
@@ -17,6 +17,7 @@ from api.models.auth import (
     UserUpdate
 )
 from api.services.auth_service import AuthService
+from api.rate_limiting import limiter
 from loguru import logger
 
 
@@ -30,7 +31,8 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
 
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
-async def register(user_data: UserRegister):
+@limiter.limit("3/minute")  # ✅ Max 3 inscriptions par minute
+async def register(request: Request, user_data: UserRegister):
     """
     📝 Inscription d'un nouveau compte
     
@@ -45,7 +47,8 @@ async def register(user_data: UserRegister):
 
 
 @router.post("/login", response_model=Token)
-async def login(credentials: UserLogin):
+@limiter.limit("5/minute")  # ✅ Max 5 tentatives de connexion par minute
+async def login(request: Request, credentials: UserLogin):
     """
     🔐 Connexion
     
@@ -77,7 +80,8 @@ async def get_profile(current_user: Dict = Depends(get_current_user)):
 
 
 @router.post("/reset-password")
-async def request_password_reset(data: PasswordReset):
+@limiter.limit("3/hour")  # ✅ Max 3 demandes de réinitialisation par heure
+async def request_password_reset(request: Request, data: PasswordReset):
     """
     🔑 Demander une réinitialisation de mot de passe
     

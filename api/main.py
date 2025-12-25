@@ -8,17 +8,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
+from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from loguru import logger
 
 from api.config import settings
+from api.rate_limiting import limiter  # ← Importer depuis notre module
 from api.routes import candidats, offres, matching, auth, entreprises, swipes, messages, notifications, cv_ai, tinder_feed, admin, support, rgpd, contact, job_ai
 # from api.routes import job_boards  # Temporairement désactivé pour corriger
-
-# Configuration du rate limiter
-limiter = Limiter(key_func=get_remote_address)
 
 # Création de l'application FastAPI
 app = FastAPI(
