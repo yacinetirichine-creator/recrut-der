@@ -24,8 +24,8 @@ class RecrutderAIChatbot {
             <div id="ai-chatbot" class="ai-chatbot">
                 <!-- Bouton flottant -->
                 <button id="chatbot-toggle" class="chatbot-toggle" aria-label="Open AI Assistant">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="currentColor"/>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z" fill="currentColor"/>
                     </svg>
                     <span class="chatbot-badge">AI</span>
                 </button>

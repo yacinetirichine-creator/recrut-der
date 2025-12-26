@@ -195,7 +195,8 @@
 }
 
 .chatbot-message.user .message-avatar {
-    background: linear-gradient(135deg, #667EEA, #764BA2);
+    background: var(--dark);
+    color: white;
 }
 
 .message-content {

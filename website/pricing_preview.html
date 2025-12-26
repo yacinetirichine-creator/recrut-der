@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Section - Recrut'der Style</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* 
+        =============================================================
+        VARIABLES & THEME (Adapté à Recrut'der)
+        =============================================================
+        */
+        :root {
+            /* Palette Recrut'der */
+            --primary: #FFB4A2;      /* Coral */
+            --primary-dark: #E5989B; /* Darker Coral */
+            --secondary: #FFCDB2;    /* Peach */
+            --accent: #B5EAD7;       /* Mint/Success */
+            --dark: #2D3436;         /* Dark Text */
+            --gray-light: #F9FAFB;   /* Background */
+            --white: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+            
+            /* Spacing & Radius */
+            --radius-card: 24px;
+            --radius-btn: 12px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+            --shadow-highlight: 0 20px 40px -5px rgba(255, 180, 162, 0.3); /* Coral shadow */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--gray-light);
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        /* 
+        =============================================================
+        LAYOUT & UTILS
+        =============================================================
+        */
+        .section-pricing {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .text-center { text-align: center; }
+        
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        /* 
+        =============================================================
+        TOGGLE SWITCH
+        =============================================================
+        */
+        .pricing-toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .toggle-label {
+            font-weight: 500;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .toggle-label.active {
+            color: var(--dark);
+            font-weight: 700;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 56px;
+            height: 32px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .badge-save {
+            background-color: var(--accent);
+            color: #065F46;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-5px);}
+            60% {transform: translateY(-3px);}
+        }
+
+        /* 
+        =============================================================
+        PRICING CARDS
+        =============================================================
+        */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            align-items: center; /* Center vertically so Pro card can grow */
+            margin-bottom: 80px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-card);
+            padding: 40px 32px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Highlighted Card (Pro) */
+        .card.popular {
+            border: 2px solid var(--primary);
+            box-shadow: var(--shadow-highlight);
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .card.popular:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+
+        .badge-popular {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(255, 180, 162, 0.4);
+        }
+
+        .plan-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .plan-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            min-height: 42px; /* Align prices */
+        }
+
+        .price-container {
+            margin-bottom: 32px;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .price-currency {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .price-value {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1;
+        }
+
+        .price-period {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .price-original {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-left: 8px;
+            display: none; /* Hidden by default */
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 32px;
+            flex-grow: 1;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        .icon-check {
+            color: var(--primary); /* Coral checkmark */
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: var(--radius-btn);
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--dark);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--dark);
+            background: var(--gray-light);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 180, 162, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 180, 162, 0.5);
+        }
+
+        .btn-dark {
+            background: var(--dark);
+            color: white;
+            border: none;
+        }
+
+        .btn-dark:hover {
+            background: #000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        /* 
+        =============================================================
+        REASSURANCE
+        =============================================================
+        */
+        .reassurance-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 30px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 80px;
+            flex-wrap: wrap;
+        }
+
+        .reassurance-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* 
+        =============================================================
+        COMPARISON TABLE
+        =============================================================
+        */
+        .comparison-section {
+            margin-bottom: 80px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th, td {
+            padding: 16px 24px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--gray-light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        td {
+            color: var(--text-main);
+        }
+
+        .col-center { text-align: center; }
+        
+        .check-yes { color: var(--accent); font-weight: bold; font-size: 1.2rem; } /* Green check */
+        .check-no { color: var(--border); font-size: 1.2rem; }
+
+        /* 
+        =============================================================
+        FAQ
+        =============================================================
+        */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-question {
+            padding: 24px 0;
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .faq-answer p {
+            padding-bottom: 24px;
+        }
+
+        .icon-plus {
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .icon-plus {
+            transform: rotate(45deg);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Adjust based on content */
+        }
+
+        /* 
+        =============================================================
+        RESPONSIVE
+        =============================================================
+        */
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+            .card { padding: 30px 20px; }
+        }
+
+        @media (max-width: 768px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .card.popular {
+                transform: scale(1);
+                order: -1; /* Show popular first on mobile */
+            }
+            
+            .card.popular:hover { transform: translateY(-5px); }
+
+            .reassurance-bar {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="section-pricing">
+        <!-- Header -->
+        <div class="text-center">
+            <h2>Simple & Transparent Pricing</h2>
+            <p class="subtitle">Start for free, upgrade when you're ready. No hidden fees.</p>
+        </div>
+
+        <!-- Toggle -->
+        <div class="pricing-toggle-container">
+            <span class="toggle-label active" id="label-monthly">Monthly</span>
+            <label class="switch">
+                <input type="checkbox" id="billing-toggle">
+                <span class="slider"></span>
+            </label>
+            <span class="toggle-label" id="label-yearly">Yearly</span>
+            <span class="badge-save">Save 2 months</span>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="pricing-grid">
+            
+            <!-- STARTER -->
+            <div class="card">
+                <div class="plan-name">Starter</div>
+                <div class="plan-desc">Perfect to discover the platform</div>
+                <div class="price-container">
+                    <span class="price-currency">€</span>
+                    <span class="price-value">0</span>
+                    <span class="price-period">/forever</span>
+                </div>
+                <ul class="features-list">
+                    <li><svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 10 Swipes per day</li>
+                    <li><svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Basic Profile</li>
+                    <li><svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Community Support</li>
+                </ul>
+                <a href="#" class="btn btn-outline" data-plan="starter">Start for Free</a>
+            </div>
+
+            <!-- PRO (Highlighted) -->
+            <div class="card popular">
+                <div class="badge-popular">✨ MOST POPULAR</div>
+                <div class="plan-name">Pro</div>
+                <div class="plan-desc">For serious candidates & recruiters</div>
+                <div class="price-container">
+                    <span class="price-currency">€</span>
+                    <span class="price-value" id="price-pro">29</span>
+                    <span class="price-period" id="period-pro">/mo</span>
+                    <span class="price-original" id="original-pro">€35</span>
+                </div>
+                <ul class="features-list">
+                    <li><svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> <strong>Unlimited Swipes</strong></li>
+                    <li><svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> See who liked you</li>
+                    <li><svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Priority Support</li>
+                    <li><svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Profile Boost (1x/week)</li>
+                </ul>
+                <a href="#" class="btn btn-primary" 
+                   data-plan="pro" 
+                   data-stripe-price-id-monthly="price_pro_monthly_123"
+                   data-stripe-price-id-yearly="price_pro_yearly_456">
+                   Start 14-day Free Trial
+                </a>
+            </div>
+
+            <!-- BUSINESS -->
+            <div class="card">
+                <div class="plan-name">Business</div>
+                <div class="plan-desc">For agencies and large teams</div>
+                <div class="price-container">
+                    <span class="price-currency">€</span>
+                    <span class="price-value" id="price-business">79</span>
+                    <span class="price-period" id="period-business">/mo</span>
+                    <span class="price-original" id="original-business">€99</span>
+                </div>
+                <ul class="features-list">
+                    <li><svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Everything in Pro</li>
+                    <li><svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> ATS Integration</li>
+                    <li><svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Advanced Analytics</li>
+                    <li><svg class="icon-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Dedicated Account Manager</li>
+                </ul>
+                <a href="#" class="btn btn-dark" 
+                   data-plan="business"
+                   data-stripe-price-id-monthly="price_biz_monthly_789"
+                   data-stripe-price-id-yearly="price_biz_yearly_012">
+                   Contact Sales
+                </a>
+            </div>
+        </div>
+
+        <!-- Reassurance -->
+        <div class="reassurance-bar">
+            <div class="reassurance-item">
+                <span>🔒</span> Secure Payment
+            </div>
+            <div class="reassurance-item">
+                <span>💳</span> No credit card required for free tier
+            </div>
+            <div class="reassurance-item">
+                <span>↩️</span> 30-day money-back guarantee
+            </div>
+            <div class="reassurance-item">
+                <span>🎁</span> Cancel anytime
+            </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="comparison-section">
+            <h3 class="text-center" style="margin-bottom: 30px;">Compare Features</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th class="col-center">Starter</th>
+                            <th class="col-center">Pro</th>
+                            <th class="col-center">Business</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Daily Swipes</td>
+                            <td class="col-center">10</td>
+                            <td class="col-center">Unlimited</td>
+                            <td class="col-center">Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>Job Postings</td>
+                            <td class="col-center">0</td>
+                            <td class="col-center">3</td>
+                            <td class="col-center">Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>See who liked you</td>
+                            <td class="col-center"><span class="check-no">✗</span></td>
+                            <td class="col-center"><span class="check-yes">✓</span></td>
+                            <td class="col-center"><span class="check-yes">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Analytics</td>
+                            <td class="col-center">Basic</td>
+                            <td class="col-center">Advanced</td>
+                            <td class="col-center">Custom</td>
+                        </tr>
+                        <tr>
+                            <td>API Access</td>
+                            <td class="col-center"><span class="check-no">✗</span></td>
+                            <td class="col-center"><span class="check-no">✗</span></td>
+                            <td class="col-center"><span class="check-yes">✓</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq-container">
+            <h3 class="text-center" style="margin-bottom: 30px;">Frequently Asked Questions</h3>
+            
+            <div class="faq-item">
+                <button class="faq-question">
+                    Can I change plans anytime?
+                    <span class="icon-plus">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately and billing is adjusted on a pro-rata basis.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Are there any hidden fees?
+                    <span class="icon-plus">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>No, the price you see is the price you pay. We believe in complete transparency.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    How does the free trial work?
+                    <span class="icon-plus">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>You get full access to all Pro features for 14 days. If you don't love it, you can cancel before the trial ends and you won't be charged.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    Do you offer discounts for students?
+                    <span class="icon-plus">+</span>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! We offer a 50% discount for students and non-profits. Contact our support team with proof of status to apply.</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <script>
+        /*
+        =============================================================
+        JAVASCRIPT LOGIC
+        =============================================================
+        */
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. TOGGLE MONTHLY/YEARLY
+            const toggle = document.getElementById('billing-toggle');
+            const labelMonthly = document.getElementById('label-monthly');
+            const labelYearly = document.getElementById('label-yearly');
+            
+            // Price Elements
+            const pricePro = document.getElementById('price-pro');
+            const periodPro = document.getElementById('period-pro');
+            const originalPro = document.getElementById('original-pro');
+            
+            const priceBiz = document.getElementById('price-business');
+            const periodBiz = document.getElementById('period-business');
+            const originalBiz = document.getElementById('original-business');
+
+            // Data Configuration
+            const pricingData = {
+                monthly: {
+                    pro: 29,
+                    business: 79
+                },
+                yearly: {
+                    pro: 24, // 290 / 12 approx
+                    business: 65 // 790 / 12 approx
+                }
+            };
+
+            toggle.addEventListener('change', (e) => {
+                const isYearly = e.target.checked;
+
+                // Update Labels
+                if (isYearly) {
+                    labelYearly.classList.add('active');
+                    labelMonthly.classList.remove('active');
+                    
+                    // Update Prices (Animate opacity for smooth effect)
+                    animateValue(pricePro, pricingData.yearly.pro);
+                    animateValue(priceBiz, pricingData.yearly.business);
+                    
+                    periodPro.textContent = '/mo (billed yearly)';
+                    periodBiz.textContent = '/mo (billed yearly)';
+                    
+                    originalPro.style.display = 'inline';
+                    originalBiz.style.display = 'inline';
+                } else {
+                    labelMonthly.classList.add('active');
+                    labelYearly.classList.remove('active');
+                    
+                    animateValue(pricePro, pricingData.monthly.pro);
+                    animateValue(priceBiz, pricingData.monthly.business);
+                    
+                    periodPro.textContent = '/mo';
+                    periodBiz.textContent = '/mo';
+                    
+                    originalPro.style.display = 'none';
+                    originalBiz.style.display = 'none';
+                }
+            });
+
+            function animateValue(element, end) {
+                element.style.opacity = 0;
+                setTimeout(() => {
+                    element.textContent = end;
+                    element.style.opacity = 1;
+                }, 200);
+            }
+
+            // 2. STRIPE PLACEHOLDER
+            const buyButtons = document.querySelectorAll('[data-stripe-price-id-monthly]');
+            
+            buyButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const plan = btn.dataset.plan;
+                    const isYearly = toggle.checked;
+                    const priceId = isYearly 
+                        ? btn.dataset.stripePriceIdYearly 
+                        : btn.dataset.stripePriceIdMonthly;
+                    
+                    console.log(`🚀 Initiating Checkout for ${plan}`);
+                    console.log(`💰 Price ID: ${priceId} (${isYearly ? 'Yearly' : 'Monthly'})`);
+                    
+                    alert(`Redirecting to Stripe Checkout for ${plan} plan...`);
+                    // Stripe.redirectToCheckout({ lineItems: [{ price: priceId, quantity: 1 }], mode: 'subscription' });
+                });
+            });
+
+            // 3. FAQ ACCORDION
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const item = question.parentElement;
+                    const isActive = item.classList.contains('active');
+                    
+                    // Close all others
+                    document.querySelectorAll('.faq-item').forEach(i => {
+                        i.classList.remove('active');
+                    });
+
+                    // Toggle current
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
